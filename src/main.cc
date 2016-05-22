@@ -1,27 +1,24 @@
 #include <iostream>
 #include <unistd.h>
 
-using namespace std;
-
+// getopt optstring.
 static const char *OPTSTRING = "fidPRrvW";
 
+// show help string and exit the process.
 void show_help() 
 {
-	printf("usage: rm [-f | -i] [-dPRrvW] file ...\n"
+	printf("usage: del [-f | -i] [-dPRrvW] file ...\n"
 	"       unlink file\n");
 	exit(0);
 }
 
+// option type.
 typedef struct {
 	bool force;
 	bool recursive;
 } option_t;
 
-inline void option_tostring(option_t *option) 
-{
-	
-}
-
+// main entry.
 int main(int argc, char *argv[])
 {
 	int opt;
@@ -52,7 +49,7 @@ int main(int argc, char *argv[])
 	argc -= optind;
 	argv += optind;
 
-	option_tostring(option);
+	// rename the files
 
 	return(0);
 }
