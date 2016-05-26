@@ -1,25 +1,22 @@
 #include <iostream>
 #include <unistd.h>
 
+void 	rm_tree(char **);
+void 	rm_file(char **);
+void 	show_help();
+
 // getopt optstring.
 static const char *OPTSTRING = "fidPRrvW";
 
-// show help string and exit the process.
-void show_help() 
-{
-	printf("usage: del [-f | -i] [-dPRrvW] file ...\n"
-	"       unlink file\n");
-	exit(0);
-}
-
 // option type.
 typedef struct {
-	bool force;
-	bool recursive;
+	bool fflag;
+	bool rflag;
 } option_t;
 
 // main entry.
-int main(int argc, char *argv[])
+int 
+main(int argc, char *argv[])
 {
 	int opt;
 	option_t *option;
@@ -30,10 +27,11 @@ int main(int argc, char *argv[])
 	while ((opt = getopt(argc, argv, OPTSTRING)) != -1) {
 		switch (opt) {
 			case 'f':
-				option->force = true;
+				option->fflag = true;
 				break;
+			case 'R':
 			case 'r':
-				option->recursive = true;
+				option->rflag = true;
 				break;
 			default:
 				show_help();
@@ -49,7 +47,36 @@ int main(int argc, char *argv[])
 	argc -= optind;
 	argv += optind;
 
-	// rename the files
+	if (*argv) {
+		// files name after options
+		if (option->rflag) {
+			rm_tree(argv);
+		} else {
+			rm_file(argv);
+		}
+	}
 
 	return(0);
+}
+
+void
+rm_tree(char **argv) 
+{
+
+}
+
+// rm file
+void 
+rm_file(char **argv) 
+{
+	
+}
+
+// show help string and exit the process.
+void 
+show_help() 
+{
+	fprintf(stderr, "%s\n%s\n", "usage: del [-f | -i] [-dPRrvW] file ...\n",
+	"       unlink file\n");
+	exit(0);
 }
