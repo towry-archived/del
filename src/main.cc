@@ -1,15 +1,19 @@
 #include <iostream>
 #include <unistd.h>
+#include <errno.h>
+#include <sys/stat.h> // :stat 
 
-void 	rm_tree(char **);
-void 	rm_file(char **);
+
+void 	del_tree(char **);
+void 	del_file(char **);
 void 	show_help();
+void 	init_option(struct option_s *);
 
 // getopt optstring.
 static const char *OPTSTRING = "fidPRrvW";
 
 // option type.
-typedef struct {
+typedef struct option_s {
 	bool fflag;
 	bool rflag;
 } option_t;
@@ -23,6 +27,7 @@ main(int argc, char *argv[])
 
 	// parse option.
 	option = (option_t *)malloc(sizeof(option_t));
+	init_option(option);
 
 	while ((opt = getopt(argc, argv, OPTSTRING)) != -1) {
 		switch (opt) {
@@ -39,20 +44,24 @@ main(int argc, char *argv[])
 		}
 	}
 
-	// show help and exit.
-	if (optind == 1) {
-		show_help();
-	}
-
 	argc -= optind;
 	argv += optind;
+
+	/**
+	 * If no arguments left, show help and exit.
+	 */
+	if (argc <= 0) {
+		if (option->fflag)
+			return(0);
+		show_help();
+	}
 
 	if (*argv) {
 		// files name after options
 		if (option->rflag) {
-			rm_tree(argv);
+			del_tree(argv);
 		} else {
-			rm_file(argv);
+			del_file(argv);
 		}
 	}
 
@@ -60,23 +69,38 @@ main(int argc, char *argv[])
 }
 
 void
-rm_tree(char **argv) 
+del_tree(char *argv[]) 
 {
 
 }
 
-// rm file
+// del file
 void 
-rm_file(char **argv) 
+del_file(char *argv[], option_t *option) 
 {
-	
+	struct stat sb;
+	char *fpath;
+
+	while ((fpath = *argv++) != NULL) {
+		// fail
+		if (lstat(fpath, &sb)) {
+			if (!option->fflag || errno != ENOENT)
+		}
+	}
 }
 
 // show help string and exit the process.
 void 
 show_help() 
 {
-	fprintf(stderr, "%s\n%s\n", "usage: del [-f | -i] [-dPRrvW] file ...\n",
-	"       unlink file\n");
+	fprintf(stderr, "%s\n%s\n", "usage: del [-f | -i] [-dPRrvW] file ...",
+	"       unlink file");
 	exit(0);
+}
+
+void 
+init_option(option_t *option) 
+{
+	option->fflag = false;
+	option->rflag = false;
 }
