@@ -11,11 +11,13 @@ void 	init_option(struct option_s *);
 
 // getopt optstring.
 static const char *OPTSTRING = "fidPRrvW";
+int eval; // exit value
 
 // option type.
 typedef struct option_s {
 	bool fflag;
 	bool rflag;
+	bool dflag;
 } option_t;
 
 // main entry.
@@ -37,6 +39,9 @@ main(int argc, char *argv[])
 			case 'R':
 			case 'r':
 				option->rflag = true;
+				break;
+			case 'd':
+				option->dflag = true;
 				break;
 			default:
 				show_help();
@@ -84,7 +89,18 @@ del_file(char *argv[], option_t *option)
 	while ((fpath = *argv++) != NULL) {
 		// fail
 		if (lstat(fpath, &sb)) {
-			if (!option->fflag || errno != ENOENT)
+			if (!option->fflag || errno != ENOENT) {
+				fprintf(stderr, "%s", fpath);
+				eval = 1;
+			}
+			continue;
+		} 
+
+		// if is a dir and not allowed to delete dir.
+		if (S_ISDIR(sb.st_mode) && !option->dflag) {
+			fprintf(stderr, "%s: is a directory", fpath);
+			eval = 1;
+			continue;
 		}
 	}
 }
