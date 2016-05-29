@@ -1,7 +1,11 @@
 # del
 
-**rm** safe replacement tool.
+**rm** safe replacement tool on Mac OS.
 
----
+## Install
 
-* [rm](https://opensource.apple.com/source/file_cmds/file_cmds-184/rm/rm.c)
+```bash
+git clone https://github.com/towry/del.git /tmp/del
+cd del
+make install
+```
