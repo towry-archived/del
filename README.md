@@ -14,9 +14,21 @@ make install
 
 ## Usage
 
+`del [-f | -i] [-dPRrvW] file ...`
+
 ```bash
 del a.txt // will move a.txt to your trash directory.
 ```
+
+#### Options
+
+| | description |
+| --- | ---|
+| `f` | delete the file in silence. |
+| `i` | not supported.|
+| `d` | delete the empty directory.	|
+| `r` | delete the directory tree. (not supported currently). |
+
 
 ## Still have some work to do
 
