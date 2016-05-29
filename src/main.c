@@ -1,3 +1,9 @@
+/**
+	del - rm safe replacement tool.
+	
+	@author Towry Wang
+*/
+
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
