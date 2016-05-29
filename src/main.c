@@ -117,7 +117,7 @@ main(int argc, char *argv[])
 	}
 
 	free((char *)TRASH_PATH);
-
+	free(option);
 	return(0);
 }
 
