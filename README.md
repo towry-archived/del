@@ -2,6 +2,8 @@
 
 **rm** safe replacement tool on Mac OS.
 
+This tool will move the files into your trash directory instead of deleting it permanent.
+
 ## Install
 
 This will install binary `del` into `/usr/local/bin`.
