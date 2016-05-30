@@ -151,19 +151,27 @@ del_file(char *argv[], option_t *option)
 			strcpy(mv_argv[1], mv_option);
 		}
 
-		// printf("%s\n%s\n%s\n%s\n", mv_argv[0], mv_argv[1], mv_argv[2], mv_argv[3]);
-
 		// fail
 		if (lstat(fpath, &sb)) {
 			if (!option->fflag || errno != ENOENT) {
 				fprintf(stderr, "%s\n", fpath);
 			}
+			
+			free_argv(mv_argc, mv_argv);
+			free(mv_option);
+			mv_argv = NULL;
+			mv_argc = 0;
 			continue;
 		} 
 
 		// if is a dir and not allowed to delete dir.
 		if (S_ISDIR(sb.st_mode) && !option->dflag) {
 			fprintf(stderr, "%s: is a directory\n", fpath);
+
+			free_argv(mv_argc, mv_argv);
+			free(mv_option);
+			mv_argv = NULL;
+			mv_argc = 0;
 			continue;
 		}
 

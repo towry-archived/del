@@ -2,7 +2,7 @@
 
 **rm** safe replacement tool on Mac OS.
 
-This tool will move the files into your trash directory instead of deleting it permanent.
+This tool will move the files into your trash directory instead of deleting it permanently.
 
 ## Install
 
@@ -39,8 +39,8 @@ del -v a.txt b.txt // del a.txt and b.txt and show verbose display.
 
 ## Still have some work to do
 
-* support delete directory, `del_dir` function not finished.
-* support delete unexpanded path like `~/a.txt` or `$HOME/a.txt`.
+* support deleting directory, `del_dir` function not finished.
+* support deleting unexpanded path like `~/a.txt` or `$HOME/a.txt`.
 
 ## License
 
