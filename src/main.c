@@ -16,8 +16,8 @@
 
 struct option_s;
 
-void 	del_tree(char **);
-void 	del_file(char **, struct option_s *);
+void 	del_tree(char **, struct option_s *);
+void 	del_file(char **, struct option_s *, int);
 void 	show_help();
 void 	init_option(struct option_s *);
 void 	reset_optind();
@@ -33,6 +33,8 @@ static const char *DELETE_TARGET_DIR = "~/.Trash/";
 static const char *MV_OPTIONS = "-finv ";
 static const char *FAKE_PRG_NAME = "del ";
 static const char *TRASH_PATH = NULL;
+// used to check some privilege
+uid_t uid;
 
 // option type.
 typedef struct option_s {
@@ -106,13 +108,14 @@ main(int argc, char *argv[])
 	}
 
 	reset_optind();
+	uid = getuid();
 
 	if (*argv) {
 		// files name after options
 		if (option->rflag) {
-			del_tree(argv);
+			del_tree(argv, option);
 		} else {
-			del_file(argv, option);
+			del_file(argv, option, false);
 		}
 	}
 
@@ -122,14 +125,14 @@ main(int argc, char *argv[])
 }
 
 void
-del_tree(char *argv[]) 
+del_tree(char *argv[], option_t *option) 
 {
-
+	del_file(argv, option, true);
 }
 
 // del file
 void 
-del_file(char *argv[], option_t *option) 
+del_file(char *argv[], option_t *option, int rmdir) 
 {
 	struct stat sb;
 	char *fpath = NULL;
@@ -165,7 +168,7 @@ del_file(char *argv[], option_t *option)
 		} 
 
 		// if is a dir and not allowed to delete dir.
-		if (S_ISDIR(sb.st_mode) && !option->dflag) {
+		if (S_ISDIR(sb.st_mode) && !option->dflag && !rmdir) {
 			fprintf(stderr, "%s: is a directory\n", fpath);
 
 			free_argv(mv_argc, mv_argv);

@@ -24,6 +24,8 @@ del a.txt // will move a.txt to your trash directory.
 del a.txt b.txt // del a.txt and b.txt and ...
 
 del -v a.txt b.txt // del a.txt and b.txt and show verbose display.
+
+del -r a/ b/ 	// del directory a and b
 ```
 
 #### Options
@@ -36,11 +38,6 @@ del -v a.txt b.txt // del a.txt and b.txt and show verbose display.
 | `r` | delete the directory tree. (not supported currently). |
 | `v` | verbose display |
 
-
-## Still have some work to do
-
-* support deleting directory, `del_dir` function not finished.
-* support deleting unexpanded path like `~/a.txt` or `$HOME/a.txt`.
 
 ## License
 
