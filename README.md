@@ -35,7 +35,7 @@ del -r a/ b/ 	// del directory a and b
 | `f` | delete the file in silence. |
 | `i` | not supported.|
 | `d` | delete the empty directory.	|
-| `r` | delete the directory tree. (not supported currently). |
+| `r` | delete the directory tree. |
 | `v` | verbose display |
 
 
