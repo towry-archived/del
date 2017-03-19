@@ -211,6 +211,41 @@ reset_optind()
 	optind = 1;
 }
 
+int
+check_dest_exist(const char *source, const char *dest) 
+{
+	char *dest_path = NULL;
+	size_t dest_len = strlen(dest);
+	int dest_has_slash = 1;
+	char *last_component = strrchr(source, '/');
+	if (last_component == NULL) {
+		// in the same directory as the command.
+		last_component = (char *)malloc((strlen(source) + 1) * sizeof(char));
+		strcpy(last_component, source);
+	} else {
+		last_component = last_component + 1;
+	}
+
+	if (dest[dest_len-1] != '/') {
+		dest_len += 1;
+		dest_has_slash = 0;
+	}
+
+	dest_path = (char *)malloc( (dest_len + strlen(last_component)) * sizeof(char));
+	strcpy(dest_path, dest);
+	if (dest_has_slash == 0) {
+		strcat(dest_path, "/");
+	}
+	strcat(dest_path, last_component);
+	printf("%s\n", dest_path);
+
+	free(dest_path);
+	free(last_component);
+
+	return 0;
+}
+
+
 void 
 init_argc_argv(int *argc, char **argv[], const char *source, bool has_mv_option) 
 {
@@ -233,6 +268,8 @@ init_argc_argv(int *argc, char **argv[], const char *source, bool has_mv_option)
 
 	rargv[index++] = (char *)malloc(strlen(source) * sizeof(char));
 	strcpy(rargv[index-1], source);
+
+	check_dest_exist(source, TRASH_PATH);
 
 	rargv[index++] = (char *)malloc(strlen(TRASH_PATH) * sizeof(char));
 	strcpy(rargv[index-1], TRASH_PATH);
